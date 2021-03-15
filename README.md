@@ -25,6 +25,7 @@ Plug 'nvim-lua/plenary.nvim'
 - `plenary.test_harness`
 - `plenary.filetype`
 - `plenary.neorocks` (This may move to packer.nvim, but I have added some improvements to use it more as a library.)
+- `plenary.strings`
 
 ### plenary.job
 
@@ -227,6 +228,17 @@ neorocks.ensure_installed('lua-cjson', 'cjson')
 
 Inspiration: https://github.com/theHamsta/nvim_rocks . However, I've used quite a different end goal (following XDG_CONFIG standards, using `package.path` and `package.cpath` to load the packages and a different strategy of loading).
 
+### plenary.strings
+
+Re-implement VimL funcs to use them in Lua loop.
+
+* `strings.strdisplaywidth`
+* `strings.strcharpart`
+
+And some other funcs are here to deal with common problems.
+
+* `strings.truncate`
+* `strings.align_str`
 
 ### And more to come :)
 
