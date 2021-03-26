@@ -239,6 +239,7 @@ And some other funcs are here to deal with common problems.
 
 * `strings.truncate`
 * `strings.align_str`
+* `strings.dedent`
 
 ### And more to come :)
 
