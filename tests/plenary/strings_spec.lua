@@ -233,6 +233,43 @@ describe('strings', function()
           '',
         },
       },
+      {
+        msg = 'examples in tjdevries/tree-sitter-lua',
+        tabstop = 2,
+        args = {[[
+          - item one with
+            some
+            additional
+            context
+            - item one.one
+              with more
+              context
+              - item
+                one.one.one
+                with even
+                more
+                context
+            - item one.two
+              no context
+          - item two]]},
+        expected = lines{
+          '- item one with',
+          '  some',
+          '  additional',
+          '  context',
+          '  - item one.one',
+          '    with more',
+          '    context',
+          '    - item',
+          '      one.one.one',
+          '      with even',
+          '      more',
+          '      context',
+          '  - item one.two',
+          '    no context',
+          '- item two',
+        },
+      },
     } do
       local msg = ('tabstop = %d, %s'):format(case.tabstop, case.msg)
       it(msg, function()
