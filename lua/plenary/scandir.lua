@@ -226,17 +226,18 @@ m.scan_dir_async = function(path, opts)
     return {}
   end
 
+  local cancelled = false
   local read_dir
   read_dir = function(err, fd)
     if not err then
-      while true do
+      while not cancelled do
         local name, typ = uv.fs_scandir_next(fd)
         if name == nil then
           break
         end
         process_item(opts, name, typ, current_dir, next_dir, base_paths, data, gitignore, match_search_pat)
       end
-      if #next_dir == 0 then
+      if cancelled or #next_dir == 0 then
         if opts.on_exit then
           opts.on_exit(data)
         end
@@ -247,6 +248,9 @@ m.scan_dir_async = function(path, opts)
     end
   end
   uv.fs_scandir(current_dir, read_dir)
+  return function()
+    cancelled = true
+  end
 end
 
 local gen_permissions = (function()
