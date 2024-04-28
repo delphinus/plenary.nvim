@@ -28,6 +28,11 @@ author = github.com/tami5
 
 local util, parse = {}, {}
 
+-- HACK: vim.tbl_flatten is deprecated in v0.10.0
+local tbl_flatten = vim.iter and function(tbl)
+  return vim.iter(tbl):flatten():totable()
+end or vim.tbl_flatten
+
 -- Helpers --------------------------------------------------
 -------------------------------------------------------------
 local F = require "plenary.functional"
@@ -51,7 +56,7 @@ util.url_encode = function(str)
 end
 
 util.kv_to_list = function(kv, prefix, sep)
-  return vim.tbl_flatten(F.kv_map(function(kvp)
+  return tbl_flatten(F.kv_map(function(kvp)
     return { prefix, kvp[1] .. sep .. kvp[2] }
   end, kv))
 end
@@ -220,7 +225,7 @@ parse.request = function(opts)
     table.insert(result, { "-o", opts.output })
   end
   table.insert(result, parse.url(opts.url, opts.query))
-  return vim.tbl_flatten(result), opts
+  return tbl_flatten(result), opts
 end
 
 -- Parse response ------------------------------------------

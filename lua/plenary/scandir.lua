@@ -132,6 +132,11 @@ local process_item = function(opts, name, typ, current_dir, next_dir, bp, data, 
   end
 end
 
+-- HACK: vim.tbl_flatten is deprecated in v0.10.0
+local tbl_flatten = vim.iter and function(tbl)
+  return vim.iter(tbl):flatten():totable()
+end or vim.tbl_flatten
+
 --- m.scan_dir
 -- Search directory recursive and syncronous
 -- @param path: string or table
@@ -151,8 +156,8 @@ m.scan_dir = function(path, opts)
   opts = opts or {}
 
   local data = {}
-  local base_paths = vim.tbl_flatten { path }
-  local next_dir = vim.tbl_flatten { path }
+  local base_paths = tbl_flatten { path }
+  local next_dir = tbl_flatten { path }
 
   local gitignore = opts.respect_gitignore and make_gitignore(base_paths) or nil
   local match_search_pat = opts.search_pattern and gen_search_pat(opts.search_pattern) or nil
@@ -204,8 +209,8 @@ m.scan_dir_async = function(path, opts)
   opts = opts or {}
 
   local data = {}
-  local base_paths = vim.tbl_flatten { path }
-  local next_dir = vim.tbl_flatten { path }
+  local base_paths = tbl_flatten { path }
+  local next_dir = tbl_flatten { path }
   local current_dir = table.remove(next_dir, 1)
 
   -- TODO(conni2461): get gitignore is not async
